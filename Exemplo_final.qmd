@@ -1,0 +1,500 @@
+---
+title: "Exemplo de preparo de dados"
+author: "Caio Corrêa"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+# Organizando o script
+
+Primeiro organizando o script, vamos separá-lo por seções, use: "Ctrl + Shift + R"
+
+```{r}
+# Pacotes ----
+if (!require(pacman)) (install.packages("pacman"))
+
+pacman::p_load(
+               tidyverse, 
+               magrittr, 
+               stringr, 
+               openxlsx,
+               interactions,
+               jtools
+               # Hmisc, 
+               # psych, 
+               # skimr, 
+               # brotools, 
+               # summarytools
+               )
+```
+
+Você pode combinar várias planilhas com vários arquivos e pastas, aninhando um loop for dentro de outro.
+
+```{r}
+# Importando dados ----
+pathdados <- "D:/R Zone/_Cuso R/Data-Science-for-babies/Data-Science-for-babies/exemplo_dataframe.xlsx"
+
+sheets_exemplo <- c("2016", "2017", "2018")
+
+for (i in sheets_exemplo) {
+  
+  assign(
+    paste0("raw_data_", i), 
+    read.xlsx(pathdados, sheet = i, na.strings = c("-9", ".", "NA", "")
+              )
+    )
+  
+}
+```
+
+# Checagem da qualidade dos dados
+
+Primeiro checar se a quantidade de observações e o range está dentro do esperado
+
+```{r, eval=FALSE}
+Hmisc::describe(raw_data_2016)
+psych::describe(raw_data_2016)
+skimr::skim(raw_data_2016)
+brotools::describe(raw_data_2016)
+summarytools::descr(raw_data_2016)
+summarytools::dfSummary(raw_data_2016)
+```
+
+Conferindo se a quantidade de observações = ano\*bloco\*gen\*pl\*rep
+
+```{r}
+1*2*17*12*5 == 2040
+```
+
+```{r, eval=FALSE}
+psych::describe(raw_data_2017)
+psych::describe(raw_data_2018)
+Hmisc::describe(raw_data_2017)
+```
+
+Repare os números maiores e menores da variável 1comp, estranho?
+
+```{r}
+summarytools::dfSummary(raw_data_2017)  # coluna do tipo character!
+```
+
+2018 tem uma coluna a mais, que provavelmente foi um espaço digitado em alguma célula do excel.
+
+```{r}
+raw_data_2018 %<>% 
+  select(-X9) 
+```
+
+Dados digitados errados em cor.polpa, tem "V" e "v"
+
+```{r}
+raw_data_2016 %$% table(cor.polpa)
+
+raw_data_2016 %<>% 
+  mutate(cor.polpa = if_else(cor.polpa == "-9", NA_character_, cor.polpa),
+         cor.polpa = if_else(cor.polpa == "v", "V", cor.polpa))
+
+# raw_data_2016 %>% 
+#   mutate(cor_polpa = case_when(
+#     TRUE ~ as.character(cor.polpa),
+#     cor.polpa == "-9" ~ "missing",
+#     cor.polpa == "v" ~ "V"
+#     ))
+```
+
+cor.polpa possui menos observações que massa e 1comp, mas só pensaremos o que fazer com isso na hora da modelagem
+
+```{r}
+raw_data_2016 %>% 
+  filter(!is.na(massa) & is.na(cor.polpa))
+```
+
+2017 tem comprimento menor que o esperado, então temos duas opções:
+
+1 - Imputamos o dado, ou usamos os dados como omissos
+
+2 - Pareamos os dados entre os anos para usar
+
+Para conferir qual dado está contido nos 3 anos, precisamos criar uma coluna de chave entre os data.frames
+
+```{r}
+raw_data_2016 %<>% 
+  mutate(codigo = paste0("B", bloco, "G", gen, "P", pl, "R", rep))
+
+raw_data_2017 %<>% 
+  mutate(codigo = paste0("B", bloco, "G", gen, "P", pl, "R", rep))
+
+raw_data_2018 %<>% 
+  mutate(codigo = paste0("B", bloco, "G", gen, "P", pl, "R", rep))
+```
+
+Existe algum código duplicado nos data.frames?
+
+```{r}
+raw_data_2016$codigo[table(raw_data_2016$codigo) > 1]
+raw_data_2017$codigo[table(raw_data_2017$codigo) > 1]
+raw_data_2018$codigo[table(raw_data_2018$codigo) > 1]
+```
+
+E agora podemos comparar as observações dos data.frames
+
+```{r}
+setdiff(raw_data_2016$codigo, raw_data_2017$codigo)
+```
+
+Mas qual está correto? Vamos criar um vetor que contém todos códigos esperados, e depois comparar com o código de cada ano
+
+```{r}
+vetor_codigo <- paste0("B", rep(1:2, each = 17*12*5),
+       "G", rep(1:17, each = 12*5, times = 2),
+       "P", rep(1:12, each = 5, times = 2*17),
+       "R", rep(1:5, times = 2*17*12))
+
+sum(vetor_codigo == raw_data_2016$codigo)
+sum(vetor_codigo == raw_data_2017$codigo)
+sum(vetor_codigo == raw_data_2018$codigo)
+
+setdiff(vetor_codigo, raw_data_2016$codigo)
+setdiff(vetor_codigo, raw_data_2017$codigo)
+setdiff(vetor_codigo, raw_data_2018$codigo)
+```
+
+Checando...
+
+```{r}
+raw_data_2017 %>% 
+  filter(bloco == 1, gen == 6, pl == 2)
+```
+
+Agora vamos imputar os dados de 2017 dentro do vetor de códigos esperados, e os valores das variáveis ficarão omissos
+
+```{r}
+raw_data_2017 <- vetor_codigo %>%
+  data.frame("codigo" = .) %>%
+  left_join(raw_data_2017, by = "codigo")
+
+setdiff(raw_data_2016$codigo, raw_data_2017$codigo)
+
+raw_data_2017 %>% 
+  filter(is.na(bloco))
+```
+
+Os dados que preencheriam as fontes de variação daria para pegar do código, não?
+
+**(?\<=B)\[:digit:\]** qualquer número precedido de um B
+
+**"+"** significa "uma ou mais vezes"
+
+```{r}
+raw_data_2017 %<>% 
+  mutate(ano = 2017,
+         bloco = str_extract(codigo, "(?<=B)[:digit:]"), 
+         gen = str_extract(codigo, "(?<=G)[:digit:]+"),
+         pl = str_extract(codigo, "(?<=P)[:digit:]+"),
+         rep = str_extract(codigo, "(?<=R)[:digit:]"))
+
+```
+
+Agora podemos juntar os 3 anos
+
+```{r, error=TRUE}
+raw_data <- bind_rows(raw_data_2016,
+                      raw_data_2017,
+                      raw_data_2018)
+```
+
+O erro aponta que estamos tentando juntar colunas de texto com números, vamos ver qual coluna está assim **(por causa do stringr)** e converter pra número
+
+```{r, error=TRUE}
+str(raw_data_2016)
+str(raw_data_2017)
+str(raw_data_2018)
+
+raw_data_2017 %<>% 
+  mutate_at(c("ano", "bloco", "gen", "pl", "rep"), as.numeric)
+
+raw_data <- bind_rows(raw_data_2016,
+                      raw_data_2017,
+                      raw_data_2018)
+```
+
+Agora temos a variável 1comp que está como texto em algum ano
+
+```{r, error=TRUE}
+str(raw_data_2016)
+str(raw_data_2017)
+str(raw_data_2018)
+```
+
+Vamos converte-la para numérica
+
+```{r}
+raw_data_2017 %>%
+  mutate(`1comp` = as.numeric(`1comp`)) %>% head
+```
+
+Repare no aviso da coerção:
+
+Perdemos algum dado nessa coerção?
+
+```{r}
+raw_data_2017 %>%
+  mutate(`1comp` = as.numeric(`1comp`)) %>% 
+  filter(is.na(`1comp`) & !is.na(massa)) 
+```
+
+O que pode ter de errado com B2G6P8R2? Vamos ver
+
+```{r}
+raw_data_2017 %>% 
+  filter(bloco == 2, gen == 6, pl == 8)
+```
+
+Aparentemente há um espaço depois do ponto no número, vamos revovê-lo **usando stringr**
+
+```{r}
+raw_data_2017 %>% 
+  mutate(`1comp` = str_remove(`1comp`, "(?<=\\.)[:space:]")) %>% 
+  filter(bloco == 2, gen == 6, pl == 8)
+```
+
+Ainda contina estranho, não? parece que tem um espaço no final
+
+E usar a forma abaixo também não ajuda, mesmo adicionando o "+" na frente do espaço por que esse mais indica 1 ou mais espaços, mas só que precisam estar juntos.
+
+```{r}
+raw_data_2017 %>% 
+  mutate(`1comp` = str_remove(`1comp`, "(?<=\\.)[:space:]+")) %>% 
+  filter(bloco == 2, gen == 6, pl == 8)
+```
+
+daria pra rodar duas vezes o **str_remove**, e aí então converter para numerico
+
+```{r}
+raw_data_2017 %>% 
+  mutate(`1comp` = str_remove(`1comp`, "(?<=\\.)[:space:]"), 
+         `1comp` = str_remove(`1comp`, "[:space:]+")) %>% 
+  filter(bloco == 2, gen == 6, pl == 8)
+
+raw_data_2017 %<>% 
+  mutate(`1comp` = str_remove(`1comp`, "(?<=\\.)[:space:]"),
+         `1comp` = str_remove(`1comp`, "[:space:]+")) %>%
+  mutate(`1comp` = as.numeric(`1comp`))
+```
+
+Agora sim, podemos unir nossos dados
+
+```{r}
+raw_data <- bind_rows(raw_data_2016,
+                      raw_data_2017,
+                      raw_data_2018)
+
+Hmisc::describe(raw_data)
+```
+
+Apareceu de novo um "v"zinho na variável cor.polpa, provavelmente de outro ano que esquecemos de conferir
+
+```{r}
+raw_data %<>% 
+  mutate(cor.polpa = if_else(cor.polpa == "v", "V", cor.polpa))
+
+Hmisc::describe(raw_data)
+```
+
+**opa, continua, rsrsr** vamos ver se é um espaço:
+
+```{r}
+raw_data %<>% 
+  mutate(cor.polpa = str_remove(cor.polpa, "[:space:]"))
+
+Hmisc::describe(raw_data)
+
+raw_data %>% sample_n(10)
+```
+
+Podemos agora renomear as colunas, para deixar padronizado e não precisar digitar por exemplo: \``` 1comp` ``
+
+```{r}
+raw_data %<>% 
+  `colnames<-`(c(
+                 "ano", 
+                 "blc", 
+                 "gen", 
+                 "plt", 
+                 "rep", 
+                 "cp", 
+                 "ms", 
+                 "cm", 
+                 "codigo"
+                 )
+               )
+```
+
+Agora, vamos checar alguns outliers
+
+As vezes também é bom checar via boxplot
+
+```{r}
+raw_data %$% 
+  plot(ms ~ cm)
+```
+
+Tem um valores muito discrepantes, vamos ver quem são
+
+```{r}
+raw_data %>% 
+  filter(cm > 150)
+```
+
+Será que esses valores podem ser erro de digitação ou algo assim?
+
+```{r}
+raw_data %>% 
+  filter(codigo == str_match(codigo, "^B2G7P2.*"))
+```
+
+Parece que o 181 poderia ser 101? ou 81?
+
+```{r}
+raw_data %>% 
+  filter(codigo == str_match(codigo, "^B2G7P2.*")) %>% 
+  group_by(ano) %>% 
+  summarise(cm_mean = mean(cm, na.rm = TRUE))
+```
+
+Decidi imputar o 790 por um erro de digitação e 181 pela média
+
+```{r}
+raw_data %<>% 
+  mutate(cm = case_when(cm == 790.60 ~ 79.06,
+                        cm == 181.84 ~ 102,
+                        TRUE ~ as.numeric(cm)))
+raw_data %$% 
+  plot(ms ~ cm)
+```
+
+Agora faz mais sentido, embora ainda parece que há outliers (pra baixo) em cm
+
+# Problemas na modelagem
+
+O bloco 1 de 2016 é o mesmo de 2018?
+
+Como são locais diferentes, cada bloco é um "lugar" diferente.
+
+Principalmente se for rodar um modelo com efeito aleatório no bloco,
+
+e se o modelo não é um modelo aninhado com
+
+y \~ ano:bloco + gen + pl
+
+mas sim um modelo onde se tem o efeito de bloco sozinho como
+
+y \~ ano + bloco + gen + pl
+
+```{r}
+raw_data %<>% 
+  mutate(blc_alt = case_when(
+                             ano == 2016 & blc == 1 ~ 1,
+                             ano == 2016 & blc == 2 ~ 2,
+                             ano == 2017 & blc == 1 ~ 3,
+                             ano == 2017 & blc == 2 ~ 4,
+                             ano == 2018 & blc == 1 ~ 5,
+                             ano == 2018 & blc == 2 ~ 6
+                             )
+         )
+
+raw_data %>% sample_n(10)
+```
+
+Podemos agora pensar num modelo de exemplo
+
+```{r}
+raw_data %>% 
+  lm(ms ~ ano, .)
+```
+
+A cada acréscimo de 1 ano, sobe 11,29 a média da massa
+
+```{r}
+raw_data %$%
+  plot(ms ~ ano)
+```
+
+Tem algo de estranho no gráfico? tenho ano 2016,5?
+
+## Converter colunas de fonte de variação para fatores
+
+Nosso primeiro modelo era uma regressão, se convertermos as fontes de variação para fatores, teremos um modelo em que a variável incluída no modelo não mais adicionará uma dimensão, mas sim duplicará as dimensões existentes!
+
+```{r}
+raw_data %<>% 
+  mutate_at(c("ano", "blc", "blc_alt", "gen", "plt", "rep"), as.factor) 
+
+raw_data %>% 
+  lm(ms ~ ano, .)
+```
+
+```{r}
+raw_data %$%
+  plot(ms ~ ano)
+```
+
+```{r}
+raw_data %$% 
+  plot(ms ~ gen)
+```
+
+É bom, sempre observar a distribuição dos resíduos do modelo!
+
+```{r}
+raw_data %>% 
+  lm(ms ~ ano, .) %>% 
+  residuals %>% 
+  plot
+```
+
+Dá pra ver 5 bloquinhos de conjunto de dados
+
+Tem algum padrão nos resíduos? Faltou alguma fonte de variação no modelo? Talvez repetição?
+
+Outras explorações com o modelo:
+
+### Regressão
+
+```{r}
+raw_data_2018 %>% 
+  lm(massa ~ bloco + gen + pl, .) %>%
+  interact_plot(pred = gen, modx = bloco, interval = TRUE, int.width = 0.8)
+```
+
+```{r}
+raw_data_2018 %>% 
+  lm(massa ~ bloco + gen + pl, .) %>%
+  interact_plot(pred = gen, modx = bloco, partial.residuals = TRUE, interval = TRUE, int.width = 0.8)
+```
+
+```{r}
+raw_data_2018 %>% 
+  lm(massa ~ bloco + gen + pl, .) %>%
+  summ
+
+raw_data %>% 
+  lm(ms ~ cm, .) %>% 
+  summ
+
+raw_data %$% 
+  cor(ms, cm, use = "pairwise.complete.obs")
+```
+
+### Modelo linear
+
+```{r}
+modelo_1 <- raw_data %>% 
+  lme4::lmer(ms ~ ano*gen + (1|blc_alt), .)
+
+interactions::cat_plot(modelo_1, pred = gen, modx = ano, plot.points = TRUE)
+```
+
+A partir do momento que uma coluna de F.V. é um fator, não importa o número mais, agora o número é uma classe!

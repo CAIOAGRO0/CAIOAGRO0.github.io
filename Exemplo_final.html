@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Caio Corrêa">
+
+<title>Exemplo de preparo de dados</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Exemplo_final_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Exemplo_final_files/libs/quarto-html/quarto.js"></script>
+<script src="Exemplo_final_files/libs/quarto-html/popper.min.js"></script>
+<script src="Exemplo_final_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Exemplo_final_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Exemplo_final_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Exemplo_final_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Exemplo_final_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Exemplo_final_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Exemplo_final_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exemplo de preparo de dados</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Caio Corrêa </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="organizando-o-script" class="level1">
+<h1>Organizando o script</h1>
+<p>Primeiro organizando o script, vamos separá-lo por seções, use: “Ctrl + Shift + R”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pacotes ----</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(pacman)) (<span class="fu">install.packages</span>(<span class="st">"pacman"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Carregando pacotes exigidos: pacman</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>               tidyverse, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>               magrittr, </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>               stringr, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>               openxlsx,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>               interactions,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>               jtools</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>               <span class="co"># Hmisc, </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>               <span class="co"># psych, </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>               <span class="co"># skimr, </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>               <span class="co"># brotools, </span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>               <span class="co"># summarytools</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>               )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Você pode combinar várias planilhas com vários arquivos e pastas, aninhando um loop for dentro de outro.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importando dados ----</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pathdados <span class="ot">&lt;-</span> <span class="st">"D:/R Zone/_Cuso R/Data-Science-for-babies/Data-Science-for-babies/exemplo_dataframe.xlsx"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sheets_exemplo <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"2016"</span>, <span class="st">"2017"</span>, <span class="st">"2018"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> sheets_exemplo) {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assign</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"raw_data_"</span>, i), </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.xlsx</span>(pathdados, <span class="at">sheet =</span> i, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">"-9"</span>, <span class="st">"."</span>, <span class="st">"NA"</span>, <span class="st">""</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>              )</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="checagem-da-qualidade-dos-dados" class="level1">
+<h1>Checagem da qualidade dos dados</h1>
+<p>Primeiro checar se a quantidade de observações e o range está dentro do esperado</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Hmisc<span class="sc">::</span><span class="fu">describe</span>(raw_data_2016)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">describe</span>(raw_data_2016)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(raw_data_2016)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>brotools<span class="sc">::</span><span class="fu">describe</span>(raw_data_2016)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>summarytools<span class="sc">::</span><span class="fu">descr</span>(raw_data_2016)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>summarytools<span class="sc">::</span><span class="fu">dfSummary</span>(raw_data_2016)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Conferindo se a quantidade de observações = ano*bloco*gen*pl*rep</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">*</span><span class="dv">2</span><span class="sc">*</span><span class="dv">17</span><span class="sc">*</span><span class="dv">12</span><span class="sc">*</span><span class="dv">5</span> <span class="sc">==</span> <span class="dv">2040</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">describe</span>(raw_data_2017)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">describe</span>(raw_data_2018)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Hmisc<span class="sc">::</span><span class="fu">describe</span>(raw_data_2017)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Repare os números maiores e menores da variável 1comp, estranho?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>summarytools<span class="sc">::</span><span class="fu">dfSummary</span>(raw_data_2017)  <span class="co"># coluna do tipo character!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data Frame Summary  
+raw_data_2017  
+Dimensions: 2035 x 8  
+Duplicates: 0  
+
+----------------------------------------------------------------------------------------------------------------
+No   Variable      Stats / Values             Freqs (% of Valid)     Graph                  Valid      Missing  
+---- ------------- -------------------------- ---------------------- ---------------------- ---------- ---------
+1    ano           1 distinct value           2017 : 2035 (100.0%)   IIIIIIIIIIIIIIIIIIII   2035       0        
+     [numeric]                                                                              (100.0%)   (0.0%)   
+
+2    bloco         Min  : 1                   1 : 1015 (49.9%)       IIIIIIIII              2035       0        
+     [numeric]     Mean : 1.5                 2 : 1020 (50.1%)       IIIIIIIIII             (100.0%)   (0.0%)   
+                   Max  : 2                                                                                     
+
+3    gen           Mean (sd) : 9 (4.9)        17 distinct values     : :   : :   :   : :    2035       0        
+     [numeric]     min &lt; med &lt; max:                                  : :   : :   :   : :    (100.0%)   (0.0%)   
+                   1 &lt; 9 &lt; 17                                        : : . : : . : . : :                        
+                   IQR (CV) : 8 (0.5)                                : : : : : : : : : :                        
+                                                                     : : : : : : : : : :                        
+
+4    pl            Mean (sd) : 6.5 (3.4)      12 distinct values     :                 :    2035       0        
+     [numeric]     min &lt; med &lt; max:                                  :                 :    (100.0%)   (0.0%)   
+                   1 &lt; 7 &lt; 12                                        : . . . . . . . . :                        
+                   IQR (CV) : 6 (0.5)                                : : : : : : : : : :                        
+                                                                     : : : : : : : : : :                        
+
+5    rep           Mean (sd) : 3 (1.4)        1 : 407 (20.0%)        IIII                   2035       0        
+     [numeric]     min &lt; med &lt; max:           2 : 407 (20.0%)        IIII                   (100.0%)   (0.0%)   
+                   1 &lt; 3 &lt; 5                  3 : 407 (20.0%)        IIII                                       
+                   IQR (CV) : 2 (0.5)         4 : 407 (20.0%)        IIII                                       
+                                              5 : 407 (20.0%)        IIII                                       
+
+6    cor.polpa     1. B                        100 ( 6.3%)           I                      1577       458      
+     [character]   2. V                       1476 (93.6%)           IIIIIIIIIIIIIIIIII     (77.5%)    (22.5%)  
+                   3. V·                         1 ( 0.1%)                                                      
+
+7    massa         Mean (sd) : 198.2 (52.7)   1492 distinct values       :                  1547       488      
+     [numeric]     min &lt; med &lt; max:                                      : :                (76.0%)    (24.0%)  
+                   75.7 &lt; 192.9 &lt; 417.2                                  : :                                    
+                   IQR (CV) : 70 (0.3)                                 : : : .                                  
+                                                                       : : : : .                                
+
+8    1comp         1. 73.87                      4 ( 0.3%)                                  1547       488      
+     [character]   2. 76.17                      4 ( 0.3%)                                  (76.0%)    (24.0%)  
+                   3. 76.77                      4 ( 0.3%)                                                      
+                   4. 77.75                      4 ( 0.3%)                                                      
+                   5. 79.400000000000006         4 ( 0.3%)                                                      
+                   6. 79.55                      4 ( 0.3%)                                                      
+                   7. 84.68                      4 ( 0.3%)                                                      
+                   8. 66.63                      3 ( 0.2%)                                                      
+                   9. 69.63                      3 ( 0.2%)                                                      
+                   10. 71.94                     3 ( 0.2%)                                                      
+                   [ 1181 others ]            1510 (97.6%)           IIIIIIIIIIIIIIIIIII                        
+----------------------------------------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+<p>2018 tem uma coluna a mais, que provavelmente foi um espaço digitado em alguma célula do excel.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>raw_data_2018 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>X9) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dados digitados errados em cor.polpa, tem “V” e “v”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>raw_data_2016 <span class="sc">%$%</span> <span class="fu">table</span>(cor.polpa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>cor.polpa
+ -9   B   v   V 
+  1  28 120 512 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>raw_data_2016 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cor.polpa =</span> <span class="fu">if_else</span>(cor.polpa <span class="sc">==</span> <span class="st">"-9"</span>, <span class="cn">NA_character_</span>, cor.polpa),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">cor.polpa =</span> <span class="fu">if_else</span>(cor.polpa <span class="sc">==</span> <span class="st">"v"</span>, <span class="st">"V"</span>, cor.polpa))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># raw_data_2016 %&gt;% </span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(cor_polpa = case_when(</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     TRUE ~ as.character(cor.polpa),</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     cor.polpa == "-9" ~ "missing",</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     cor.polpa == "v" ~ "V"</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     ))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>cor.polpa possui menos observações que massa e 1comp, mas só pensaremos o que fazer com isso na hora da modelagem</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>raw_data_2016 <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(massa) <span class="sc">&amp;</span> <span class="fu">is.na</span>(cor.polpa))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ano bloco gen pl rep cor.polpa  massa 1comp
+1 2016     1  13 12   1      &lt;NA&gt; 129.53 77.16
+2 2016     1  13 12   2      &lt;NA&gt; 136.62 78.07
+3 2016     1  13 12   3      &lt;NA&gt; 140.05 78.35
+4 2016     1  13 12   4      &lt;NA&gt; 152.94 80.75
+5 2016     1  13 12   5      &lt;NA&gt; 190.85 87.42</code></pre>
+</div>
+</div>
+<p>2017 tem comprimento menor que o esperado, então temos duas opções:</p>
+<p>1 - Imputamos o dado, ou usamos os dados como omissos</p>
+<p>2 - Pareamos os dados entre os anos para usar</p>
+<p>Para conferir qual dado está contido nos 3 anos, precisamos criar uma coluna de chave entre os data.frames</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>raw_data_2016 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">codigo =</span> <span class="fu">paste0</span>(<span class="st">"B"</span>, bloco, <span class="st">"G"</span>, gen, <span class="st">"P"</span>, pl, <span class="st">"R"</span>, rep))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">codigo =</span> <span class="fu">paste0</span>(<span class="st">"B"</span>, bloco, <span class="st">"G"</span>, gen, <span class="st">"P"</span>, pl, <span class="st">"R"</span>, rep))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>raw_data_2018 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">codigo =</span> <span class="fu">paste0</span>(<span class="st">"B"</span>, bloco, <span class="st">"G"</span>, gen, <span class="st">"P"</span>, pl, <span class="st">"R"</span>, rep))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Existe algum código duplicado nos data.frames?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>raw_data_2016<span class="sc">$</span>codigo[<span class="fu">table</span>(raw_data_2016<span class="sc">$</span>codigo) <span class="sc">&gt;</span> <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017<span class="sc">$</span>codigo[<span class="fu">table</span>(raw_data_2017<span class="sc">$</span>codigo) <span class="sc">&gt;</span> <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>raw_data_2018<span class="sc">$</span>codigo[<span class="fu">table</span>(raw_data_2018<span class="sc">$</span>codigo) <span class="sc">&gt;</span> <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+</div>
+<p>E agora podemos comparar as observações dos data.frames</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(raw_data_2016<span class="sc">$</span>codigo, raw_data_2017<span class="sc">$</span>codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "B1G6P2R1" "B1G6P2R2" "B1G6P2R3" "B1G6P2R4" "B1G6P2R5"</code></pre>
+</div>
+</div>
+<p>Mas qual está correto? Vamos criar um vetor que contém todos códigos esperados, e depois comparar com o código de cada ano</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>vetor_codigo <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"B"</span>, <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">each =</span> <span class="dv">17</span><span class="sc">*</span><span class="dv">12</span><span class="sc">*</span><span class="dv">5</span>),</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">"G"</span>, <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">17</span>, <span class="at">each =</span> <span class="dv">12</span><span class="sc">*</span><span class="dv">5</span>, <span class="at">times =</span> <span class="dv">2</span>),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">"P"</span>, <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">each =</span> <span class="dv">5</span>, <span class="at">times =</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">17</span>),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">"R"</span>, <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">times =</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">17</span><span class="sc">*</span><span class="dv">12</span>))</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vetor_codigo <span class="sc">==</span> raw_data_2016<span class="sc">$</span>codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2040</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vetor_codigo <span class="sc">==</span> raw_data_2017<span class="sc">$</span>codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in vetor_codigo == raw_data_2017$codigo: comprimento do objeto maior não
+é múltiplo do comprimento do objeto menor</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 305</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vetor_codigo <span class="sc">==</span> raw_data_2018<span class="sc">$</span>codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2040</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(vetor_codigo, raw_data_2016<span class="sc">$</span>codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(vetor_codigo, raw_data_2017<span class="sc">$</span>codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "B1G6P2R1" "B1G6P2R2" "B1G6P2R3" "B1G6P2R4" "B1G6P2R5"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(vetor_codigo, raw_data_2018<span class="sc">$</span>codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+</div>
+<p>Checando…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bloco <span class="sc">==</span> <span class="dv">1</span>, gen <span class="sc">==</span> <span class="dv">6</span>, pl <span class="sc">==</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] ano       bloco     gen       pl        rep       cor.polpa massa    
+[8] 1comp     codigo   
+&lt;0 linhas&gt; (ou row.names de comprimento 0)</code></pre>
+</div>
+</div>
+<p>Agora vamos imputar os dados de 2017 dentro do vetor de códigos esperados, e os valores das variáveis ficarão omissos</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="ot">&lt;-</span> vetor_codigo <span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="st">"codigo"</span> <span class="ot">=</span> .) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(raw_data_2017, <span class="at">by =</span> <span class="st">"codigo"</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(raw_data_2016<span class="sc">$</span>codigo, raw_data_2017<span class="sc">$</span>codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&gt;%</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(bloco))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    codigo ano bloco gen pl rep cor.polpa massa 1comp
+1 B1G6P2R1  NA    NA  NA NA  NA      &lt;NA&gt;    NA  &lt;NA&gt;
+2 B1G6P2R2  NA    NA  NA NA  NA      &lt;NA&gt;    NA  &lt;NA&gt;
+3 B1G6P2R3  NA    NA  NA NA  NA      &lt;NA&gt;    NA  &lt;NA&gt;
+4 B1G6P2R4  NA    NA  NA NA  NA      &lt;NA&gt;    NA  &lt;NA&gt;
+5 B1G6P2R5  NA    NA  NA NA  NA      &lt;NA&gt;    NA  &lt;NA&gt;</code></pre>
+</div>
+</div>
+<p>Os dados que preencheriam as fontes de variação daria para pegar do código, não?</p>
+<p><strong>(?&lt;=B)[:digit:]</strong> qualquer número precedido de um B</p>
+<p><strong>“+”</strong> significa “uma ou mais vezes”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ano =</span> <span class="dv">2017</span>,</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">bloco =</span> <span class="fu">str_extract</span>(codigo, <span class="st">"(?&lt;=B)[:digit:]"</span>), </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">gen =</span> <span class="fu">str_extract</span>(codigo, <span class="st">"(?&lt;=G)[:digit:]+"</span>),</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">pl =</span> <span class="fu">str_extract</span>(codigo, <span class="st">"(?&lt;=P)[:digit:]+"</span>),</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">rep =</span> <span class="fu">str_extract</span>(codigo, <span class="st">"(?&lt;=R)[:digit:]"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Agora podemos juntar os 3 anos</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(raw_data_2016,</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>                      raw_data_2017,</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>                      raw_data_2018)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `bind_rows()`:
+! Can't combine `..1$bloco` &lt;double&gt; and `..2$bloco` &lt;character&gt;.</code></pre>
+</div>
+</div>
+<p>O erro aponta que estamos tentando juntar colunas de texto com números, vamos ver qual coluna está assim <strong>(por causa do stringr)</strong> e converter pra número</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(raw_data_2016)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2040 obs. of  9 variables:
+ $ ano      : num  2016 2016 2016 2016 2016 ...
+ $ bloco    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ gen      : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ pl       : num  1 1 1 1 1 2 2 2 2 2 ...
+ $ rep      : num  1 2 3 4 5 1 2 3 4 5 ...
+ $ cor.polpa: chr  NA NA NA NA ...
+ $ massa    : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ 1comp    : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ codigo   : chr  "B1G1P1R1" "B1G1P1R2" "B1G1P1R3" "B1G1P1R4" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(raw_data_2017)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2040 obs. of  9 variables:
+ $ codigo   : chr  "B1G1P1R1" "B1G1P1R2" "B1G1P1R3" "B1G1P1R4" ...
+ $ ano      : num  2017 2017 2017 2017 2017 ...
+ $ bloco    : chr  "1" "1" "1" "1" ...
+ $ gen      : chr  "1" "1" "1" "1" ...
+ $ pl       : chr  "1" "1" "1" "1" ...
+ $ rep      : chr  "1" "2" "3" "4" ...
+ $ cor.polpa: chr  "V" "V" "V" "V" ...
+ $ massa    : num  240 276 198 208 283 ...
+ $ 1comp    : chr  "92.12" "92.28" "84.45" "85" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(raw_data_2018)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2040 obs. of  9 variables:
+ $ ano      : num  2018 2018 2018 2018 2018 ...
+ $ bloco    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ gen      : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ pl       : num  1 1 1 1 1 2 2 2 2 2 ...
+ $ rep      : num  1 2 3 4 5 1 2 3 4 5 ...
+ $ cor.polpa: chr  "V" NA NA NA ...
+ $ massa    : num  230 NA NA NA NA ...
+ $ 1comp    : num  791 NA NA NA NA ...
+ $ codigo   : chr  "B1G1P1R1" "B1G1P1R2" "B1G1P1R3" "B1G1P1R4" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">c</span>(<span class="st">"ano"</span>, <span class="st">"bloco"</span>, <span class="st">"gen"</span>, <span class="st">"pl"</span>, <span class="st">"rep"</span>), as.numeric)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(raw_data_2016,</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>                      raw_data_2017,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>                      raw_data_2018)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `bind_rows()`:
+! Can't combine `..1$1comp` &lt;double&gt; and `..2$1comp` &lt;character&gt;.</code></pre>
+</div>
+</div>
+<p>Agora temos a variável 1comp que está como texto em algum ano</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(raw_data_2016)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2040 obs. of  9 variables:
+ $ ano      : num  2016 2016 2016 2016 2016 ...
+ $ bloco    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ gen      : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ pl       : num  1 1 1 1 1 2 2 2 2 2 ...
+ $ rep      : num  1 2 3 4 5 1 2 3 4 5 ...
+ $ cor.polpa: chr  NA NA NA NA ...
+ $ massa    : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ 1comp    : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ codigo   : chr  "B1G1P1R1" "B1G1P1R2" "B1G1P1R3" "B1G1P1R4" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(raw_data_2017)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2040 obs. of  9 variables:
+ $ codigo   : chr  "B1G1P1R1" "B1G1P1R2" "B1G1P1R3" "B1G1P1R4" ...
+ $ ano      : num  2017 2017 2017 2017 2017 ...
+ $ bloco    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ gen      : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ pl       : num  1 1 1 1 1 2 2 2 2 2 ...
+ $ rep      : num  1 2 3 4 5 1 2 3 4 5 ...
+ $ cor.polpa: chr  "V" "V" "V" "V" ...
+ $ massa    : num  240 276 198 208 283 ...
+ $ 1comp    : chr  "92.12" "92.28" "84.45" "85" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(raw_data_2018)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2040 obs. of  9 variables:
+ $ ano      : num  2018 2018 2018 2018 2018 ...
+ $ bloco    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ gen      : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ pl       : num  1 1 1 1 1 2 2 2 2 2 ...
+ $ rep      : num  1 2 3 4 5 1 2 3 4 5 ...
+ $ cor.polpa: chr  "V" NA NA NA ...
+ $ massa    : num  230 NA NA NA NA ...
+ $ 1comp    : num  791 NA NA NA NA ...
+ $ codigo   : chr  "B1G1P1R1" "B1G1P1R2" "B1G1P1R3" "B1G1P1R4" ...</code></pre>
+</div>
+</div>
+<p>Vamos converte-la para numérica</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&gt;%</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>)) <span class="sc">%&gt;%</span> head</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in mask$eval_all_mutate(quo): NAs introduzidos por coerção</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    codigo  ano bloco gen pl rep cor.polpa  massa 1comp
+1 B1G1P1R1 2017     1   1  1   1         V 240.17 92.12
+2 B1G1P1R2 2017     1   1  1   2         V 275.88 92.28
+3 B1G1P1R3 2017     1   1  1   3         V 198.09 84.45
+4 B1G1P1R4 2017     1   1  1   4         V 207.57 85.00
+5 B1G1P1R5 2017     1   1  1   5         V 282.80 80.40
+6 B1G1P2R1 2017     1   1  2   1         B 212.73 80.28</code></pre>
+</div>
+</div>
+<p>Repare no aviso da coerção:</p>
+<p>Perdemos algum dado nessa coerção?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&gt;%</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(massa)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in mask$eval_all_mutate(quo): NAs introduzidos por coerção</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    codigo  ano bloco gen pl rep cor.polpa  massa 1comp
+1 B2G6P8R2 2017     2   6  8   2         V 219.68    NA</code></pre>
+</div>
+</div>
+<p>O que pode ter de errado com B2G6P8R2? Vamos ver</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&gt;%</span> </span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bloco <span class="sc">==</span> <span class="dv">2</span>, gen <span class="sc">==</span> <span class="dv">6</span>, pl <span class="sc">==</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    codigo  ano bloco gen pl rep cor.polpa  massa   1comp
+1 B2G6P8R1 2017     2   6  8   1         V 167.91   79.14
+2 B2G6P8R2 2017     2   6  8   2         V 219.68 84. 76 
+3 B2G6P8R3 2017     2   6  8   3         V 239.91   91.11
+4 B2G6P8R4 2017     2   6  8   4         V 222.78   76.28
+5 B2G6P8R5 2017     2   6  8   5         V 234.85   91.83</code></pre>
+</div>
+</div>
+<p>Aparentemente há um espaço depois do ponto no número, vamos revovê-lo <strong>usando stringr</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&gt;%</span> </span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_remove</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">.)[:space:]"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bloco <span class="sc">==</span> <span class="dv">2</span>, gen <span class="sc">==</span> <span class="dv">6</span>, pl <span class="sc">==</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    codigo  ano bloco gen pl rep cor.polpa  massa  1comp
+1 B2G6P8R1 2017     2   6  8   1         V 167.91  79.14
+2 B2G6P8R2 2017     2   6  8   2         V 219.68 84.76 
+3 B2G6P8R3 2017     2   6  8   3         V 239.91  91.11
+4 B2G6P8R4 2017     2   6  8   4         V 222.78  76.28
+5 B2G6P8R5 2017     2   6  8   5         V 234.85  91.83</code></pre>
+</div>
+</div>
+<p>Ainda contina estranho, não? parece que tem um espaço no final</p>
+<p>E usar a forma abaixo também não ajuda, mesmo adicionando o “+” na frente do espaço por que esse mais indica 1 ou mais espaços, mas só que precisam estar juntos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&gt;%</span> </span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_remove</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">.)[:space:]+"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bloco <span class="sc">==</span> <span class="dv">2</span>, gen <span class="sc">==</span> <span class="dv">6</span>, pl <span class="sc">==</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    codigo  ano bloco gen pl rep cor.polpa  massa  1comp
+1 B2G6P8R1 2017     2   6  8   1         V 167.91  79.14
+2 B2G6P8R2 2017     2   6  8   2         V 219.68 84.76 
+3 B2G6P8R3 2017     2   6  8   3         V 239.91  91.11
+4 B2G6P8R4 2017     2   6  8   4         V 222.78  76.28
+5 B2G6P8R5 2017     2   6  8   5         V 234.85  91.83</code></pre>
+</div>
+</div>
+<p>daria pra rodar duas vezes o <strong>str_remove</strong>, e aí então converter para numerico</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&gt;%</span> </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_remove</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">.)[:space:]"</span>), </span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_remove</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>, <span class="st">"[:space:]+"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bloco <span class="sc">==</span> <span class="dv">2</span>, gen <span class="sc">==</span> <span class="dv">6</span>, pl <span class="sc">==</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    codigo  ano bloco gen pl rep cor.polpa  massa 1comp
+1 B2G6P8R1 2017     2   6  8   1         V 167.91 79.14
+2 B2G6P8R2 2017     2   6  8   2         V 219.68 84.76
+3 B2G6P8R3 2017     2   6  8   3         V 239.91 91.11
+4 B2G6P8R4 2017     2   6  8   4         V 222.78 76.28
+5 B2G6P8R5 2017     2   6  8   5         V 234.85 91.83</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>raw_data_2017 <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_remove</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>, <span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">.)[:space:]"</span>),</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">str_remove</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>, <span class="st">"[:space:]+"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">1comp</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Agora sim, podemos unir nossos dados</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(raw_data_2016,</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>                      raw_data_2017,</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>                      raw_data_2018)</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>Hmisc<span class="sc">::</span><span class="fu">describe</span>(raw_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>raw_data 
+
+ 9  Variables      6120  Observations
+--------------------------------------------------------------------------------
+ano 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        3    0.889     2017    0.889 
+                            
+Value       2016  2017  2018
+Frequency   2040  2040  2040
+Proportion 0.333 0.333 0.333
+--------------------------------------------------------------------------------
+bloco 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        2     0.75      1.5   0.5001 
+                    
+Value         1    2
+Frequency  3060 3060
+Proportion  0.5  0.5
+--------------------------------------------------------------------------------
+gen 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    6120        0       17    0.997        9    5.648        1        2 
+     .25      .50      .75      .90      .95 
+       5        9       13       16       17 
+
+lowest :  1  2  3  4  5, highest: 13 14 15 16 17
+                                                                            
+Value          1     2     3     4     5     6     7     8     9    10    11
+Frequency    360   360   360   360   360   360   360   360   360   360   360
+Proportion 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059
+                                              
+Value         12    13    14    15    16    17
+Frequency    360   360   360   360   360   360
+Proportion 0.059 0.059 0.059 0.059 0.059 0.059
+--------------------------------------------------------------------------------
+pl 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    6120        0       12    0.993      6.5    3.973     1.00     2.00 
+     .25      .50      .75      .90      .95 
+    3.75     6.50     9.25    11.00    12.00 
+
+lowest :  1  2  3  4  5, highest:  8  9 10 11 12
+                                                                            
+Value          1     2     3     4     5     6     7     8     9    10    11
+Frequency    510   510   510   510   510   510   510   510   510   510   510
+Proportion 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083
+                
+Value         12
+Frequency    510
+Proportion 0.083
+--------------------------------------------------------------------------------
+rep 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        5     0.96        3      1.6 
+
+lowest : 1 2 3 4 5, highest: 1 2 3 4 5
+                                   
+Value         1    2    3    4    5
+Frequency  1224 1224 1224 1224 1224
+Proportion  0.2  0.2  0.2  0.2  0.2
+--------------------------------------------------------------------------------
+cor.polpa 
+       n  missing distinct 
+    3806     2314        3 
+                            
+Value          B     V     V
+Frequency    239  3566     1
+Proportion 0.063 0.937 0.000
+--------------------------------------------------------------------------------
+massa 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    3781     2339     3440        1    200.3    58.32    123.7    138.5 
+     .25      .50      .75      .90      .95 
+   162.6    194.8    234.6    269.3    290.7 
+
+lowest :  11.65  22.54  69.05  70.35  71.34, highest: 395.86 396.00 404.41 417.20 423.80
+--------------------------------------------------------------------------------
+1comp 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    3781     2339     2199        1     80.9    10.37    67.18    70.11 
+     .25      .50      .75      .90      .95 
+   74.72    80.52    86.47    91.82    95.23 
+
+lowest :  11.95  17.90  34.77  36.45  39.08, highest: 113.99 115.84 117.55 181.84 790.60
+                                                                            
+Value         10    20    30    40    50    60    70    80    90   100   110
+Frequency      1     1     1     7     4   112   853  1657   940   180    21
+Proportion 0.000 0.000 0.000 0.002 0.001 0.030 0.226 0.438 0.249 0.048 0.006
+                            
+Value        120   180   790
+Frequency      2     1     1
+Proportion 0.001 0.000 0.000
+
+For the frequency table, variable is rounded to the nearest 10
+--------------------------------------------------------------------------------
+codigo 
+       n  missing distinct 
+    6120        0     2040 
+
+lowest : B1G10P10R1 B1G10P10R2 B1G10P10R3 B1G10P10R4 B1G10P10R5
+highest: B2G9P9R1   B2G9P9R2   B2G9P9R3   B2G9P9R4   B2G9P9R5  
+--------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+<p>Apareceu de novo um “v”zinho na variável cor.polpa, provavelmente de outro ano que esquecemos de conferir</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cor.polpa =</span> <span class="fu">if_else</span>(cor.polpa <span class="sc">==</span> <span class="st">"v"</span>, <span class="st">"V"</span>, cor.polpa))</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>Hmisc<span class="sc">::</span><span class="fu">describe</span>(raw_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>raw_data 
+
+ 9  Variables      6120  Observations
+--------------------------------------------------------------------------------
+ano 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        3    0.889     2017    0.889 
+                            
+Value       2016  2017  2018
+Frequency   2040  2040  2040
+Proportion 0.333 0.333 0.333
+--------------------------------------------------------------------------------
+bloco 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        2     0.75      1.5   0.5001 
+                    
+Value         1    2
+Frequency  3060 3060
+Proportion  0.5  0.5
+--------------------------------------------------------------------------------
+gen 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    6120        0       17    0.997        9    5.648        1        2 
+     .25      .50      .75      .90      .95 
+       5        9       13       16       17 
+
+lowest :  1  2  3  4  5, highest: 13 14 15 16 17
+                                                                            
+Value          1     2     3     4     5     6     7     8     9    10    11
+Frequency    360   360   360   360   360   360   360   360   360   360   360
+Proportion 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059
+                                              
+Value         12    13    14    15    16    17
+Frequency    360   360   360   360   360   360
+Proportion 0.059 0.059 0.059 0.059 0.059 0.059
+--------------------------------------------------------------------------------
+pl 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    6120        0       12    0.993      6.5    3.973     1.00     2.00 
+     .25      .50      .75      .90      .95 
+    3.75     6.50     9.25    11.00    12.00 
+
+lowest :  1  2  3  4  5, highest:  8  9 10 11 12
+                                                                            
+Value          1     2     3     4     5     6     7     8     9    10    11
+Frequency    510   510   510   510   510   510   510   510   510   510   510
+Proportion 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083
+                
+Value         12
+Frequency    510
+Proportion 0.083
+--------------------------------------------------------------------------------
+rep 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        5     0.96        3      1.6 
+
+lowest : 1 2 3 4 5, highest: 1 2 3 4 5
+                                   
+Value         1    2    3    4    5
+Frequency  1224 1224 1224 1224 1224
+Proportion  0.2  0.2  0.2  0.2  0.2
+--------------------------------------------------------------------------------
+cor.polpa 
+       n  missing distinct 
+    3806     2314        3 
+                            
+Value          B     V     V
+Frequency    239  3566     1
+Proportion 0.063 0.937 0.000
+--------------------------------------------------------------------------------
+massa 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    3781     2339     3440        1    200.3    58.32    123.7    138.5 
+     .25      .50      .75      .90      .95 
+   162.6    194.8    234.6    269.3    290.7 
+
+lowest :  11.65  22.54  69.05  70.35  71.34, highest: 395.86 396.00 404.41 417.20 423.80
+--------------------------------------------------------------------------------
+1comp 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    3781     2339     2199        1     80.9    10.37    67.18    70.11 
+     .25      .50      .75      .90      .95 
+   74.72    80.52    86.47    91.82    95.23 
+
+lowest :  11.95  17.90  34.77  36.45  39.08, highest: 113.99 115.84 117.55 181.84 790.60
+                                                                            
+Value         10    20    30    40    50    60    70    80    90   100   110
+Frequency      1     1     1     7     4   112   853  1657   940   180    21
+Proportion 0.000 0.000 0.000 0.002 0.001 0.030 0.226 0.438 0.249 0.048 0.006
+                            
+Value        120   180   790
+Frequency      2     1     1
+Proportion 0.001 0.000 0.000
+
+For the frequency table, variable is rounded to the nearest 10
+--------------------------------------------------------------------------------
+codigo 
+       n  missing distinct 
+    6120        0     2040 
+
+lowest : B1G10P10R1 B1G10P10R2 B1G10P10R3 B1G10P10R4 B1G10P10R5
+highest: B2G9P9R1   B2G9P9R2   B2G9P9R3   B2G9P9R4   B2G9P9R5  
+--------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+<p><strong>opa, continua, rsrsr</strong> vamos ver se é um espaço:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cor.polpa =</span> <span class="fu">str_remove</span>(cor.polpa, <span class="st">"[:space:]"</span>))</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>Hmisc<span class="sc">::</span><span class="fu">describe</span>(raw_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>raw_data 
+
+ 9  Variables      6120  Observations
+--------------------------------------------------------------------------------
+ano 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        3    0.889     2017    0.889 
+                            
+Value       2016  2017  2018
+Frequency   2040  2040  2040
+Proportion 0.333 0.333 0.333
+--------------------------------------------------------------------------------
+bloco 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        2     0.75      1.5   0.5001 
+                    
+Value         1    2
+Frequency  3060 3060
+Proportion  0.5  0.5
+--------------------------------------------------------------------------------
+gen 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    6120        0       17    0.997        9    5.648        1        2 
+     .25      .50      .75      .90      .95 
+       5        9       13       16       17 
+
+lowest :  1  2  3  4  5, highest: 13 14 15 16 17
+                                                                            
+Value          1     2     3     4     5     6     7     8     9    10    11
+Frequency    360   360   360   360   360   360   360   360   360   360   360
+Proportion 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059 0.059
+                                              
+Value         12    13    14    15    16    17
+Frequency    360   360   360   360   360   360
+Proportion 0.059 0.059 0.059 0.059 0.059 0.059
+--------------------------------------------------------------------------------
+pl 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    6120        0       12    0.993      6.5    3.973     1.00     2.00 
+     .25      .50      .75      .90      .95 
+    3.75     6.50     9.25    11.00    12.00 
+
+lowest :  1  2  3  4  5, highest:  8  9 10 11 12
+                                                                            
+Value          1     2     3     4     5     6     7     8     9    10    11
+Frequency    510   510   510   510   510   510   510   510   510   510   510
+Proportion 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083 0.083
+                
+Value         12
+Frequency    510
+Proportion 0.083
+--------------------------------------------------------------------------------
+rep 
+       n  missing distinct     Info     Mean      Gmd 
+    6120        0        5     0.96        3      1.6 
+
+lowest : 1 2 3 4 5, highest: 1 2 3 4 5
+                                   
+Value         1    2    3    4    5
+Frequency  1224 1224 1224 1224 1224
+Proportion  0.2  0.2  0.2  0.2  0.2
+--------------------------------------------------------------------------------
+cor.polpa 
+       n  missing distinct 
+    3806     2314        2 
+                      
+Value          B     V
+Frequency    239  3567
+Proportion 0.063 0.937
+--------------------------------------------------------------------------------
+massa 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    3781     2339     3440        1    200.3    58.32    123.7    138.5 
+     .25      .50      .75      .90      .95 
+   162.6    194.8    234.6    269.3    290.7 
+
+lowest :  11.65  22.54  69.05  70.35  71.34, highest: 395.86 396.00 404.41 417.20 423.80
+--------------------------------------------------------------------------------
+1comp 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    3781     2339     2199        1     80.9    10.37    67.18    70.11 
+     .25      .50      .75      .90      .95 
+   74.72    80.52    86.47    91.82    95.23 
+
+lowest :  11.95  17.90  34.77  36.45  39.08, highest: 113.99 115.84 117.55 181.84 790.60
+                                                                            
+Value         10    20    30    40    50    60    70    80    90   100   110
+Frequency      1     1     1     7     4   112   853  1657   940   180    21
+Proportion 0.000 0.000 0.000 0.002 0.001 0.030 0.226 0.438 0.249 0.048 0.006
+                            
+Value        120   180   790
+Frequency      2     1     1
+Proportion 0.001 0.000 0.000
+
+For the frequency table, variable is rounded to the nearest 10
+--------------------------------------------------------------------------------
+codigo 
+       n  missing distinct 
+    6120        0     2040 
+
+lowest : B1G10P10R1 B1G10P10R2 B1G10P10R3 B1G10P10R4 B1G10P10R5
+highest: B2G9P9R1   B2G9P9R2   B2G9P9R3   B2G9P9R4   B2G9P9R5  
+--------------------------------------------------------------------------------</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    ano bloco gen pl rep cor.polpa  massa  1comp     codigo
+1  2017     2  13  8   2         V 236.23  85.01  B2G13P8R2
+2  2017     1  16  4   4         V 175.15  68.63  B1G16P4R4
+3  2016     2  15  3   5      &lt;NA&gt;     NA     NA  B2G15P3R5
+4  2018     2   8  6   2         V 295.45 100.05   B2G8P6R2
+5  2016     2   3 12   5         V 171.09  83.05  B2G3P12R5
+6  2016     1   7 11   1         V 231.67  85.56  B1G7P11R1
+7  2016     2  15 12   5      &lt;NA&gt;     NA     NA B2G15P12R5
+8  2018     1  15  5   4      &lt;NA&gt;     NA     NA  B1G15P5R4
+9  2017     1  13  2   5         V 187.28  80.83  B1G13P2R5
+10 2016     2  15 12   4      &lt;NA&gt;     NA     NA B2G15P12R4</code></pre>
+</div>
+</div>
+<p>Podemos agora renomear as colunas, para deixar padronizado e não precisar digitar por exemplo: `<code>1comp`</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(<span class="fu">c</span>(</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"ano"</span>, </span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"blc"</span>, </span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"gen"</span>, </span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"plt"</span>, </span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"rep"</span>, </span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"cp"</span>, </span>
+<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"ms"</span>, </span>
+<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"cm"</span>, </span>
+<span id="cb85-11"><a href="#cb85-11" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"codigo"</span></span>
+<span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a>               )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Agora, vamos checar alguns outliers</p>
+<p>As vezes também é bom checar via boxplot</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%$%</span> </span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ms <span class="sc">~</span> cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Tem um valores muito discrepantes, vamos ver quem são</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> </span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cm <span class="sc">&gt;</span> <span class="dv">150</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ano blc gen plt rep cp     ms     cm   codigo
+1 2017   2   7   2   1  V 210.50 181.84 B2G7P2R1
+2 2018   1   1   1   1  V 230.23 790.60 B1G1P1R1</code></pre>
+</div>
+</div>
+<p>Será que esses valores podem ser erro de digitação ou algo assim?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> </span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(codigo <span class="sc">==</span> <span class="fu">str_match</span>(codigo, <span class="st">"^B2G7P2.*"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    ano blc gen plt rep   cp     ms     cm   codigo
+1  2016   2   7   2   1 &lt;NA&gt;     NA     NA B2G7P2R1
+2  2016   2   7   2   2 &lt;NA&gt;     NA     NA B2G7P2R2
+3  2016   2   7   2   3 &lt;NA&gt;     NA     NA B2G7P2R3
+4  2016   2   7   2   4 &lt;NA&gt;     NA     NA B2G7P2R4
+5  2016   2   7   2   5 &lt;NA&gt;     NA     NA B2G7P2R5
+6  2017   2   7   2   1    V 210.50 181.84 B2G7P2R1
+7  2017   2   7   2   2    V 251.68 105.18 B2G7P2R2
+8  2017   2   7   2   3    V 297.69 107.24 B2G7P2R3
+9  2017   2   7   2   4    V 176.64  77.75 B2G7P2R4
+10 2017   2   7   2   5    V 215.89  82.78 B2G7P2R5
+11 2018   2   7   2   1    V 287.82 104.78 B2G7P2R1
+12 2018   2   7   2   2    V 280.56  99.41 B2G7P2R2
+13 2018   2   7   2   3    V 222.21  90.18 B2G7P2R3
+14 2018   2   7   2   4    V 374.28 113.99 B2G7P2R4
+15 2018   2   7   2   5 &lt;NA&gt;     NA     NA B2G7P2R5</code></pre>
+</div>
+</div>
+<p>Parece que o 181 poderia ser 101? ou 81?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> </span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(codigo <span class="sc">==</span> <span class="fu">str_match</span>(codigo, <span class="st">"^B2G7P2.*"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ano) <span class="sc">%&gt;%</span> </span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">cm_mean =</span> <span class="fu">mean</span>(cm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+    ano cm_mean
+  &lt;dbl&gt;   &lt;dbl&gt;
+1  2016    NaN 
+2  2017    111.
+3  2018    102.</code></pre>
+</div>
+</div>
+<p>Decidi imputar o 790 por um erro de digitação e 181 pela média</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cm =</span> <span class="fu">case_when</span>(cm <span class="sc">==</span> <span class="fl">790.60</span> <span class="sc">~</span> <span class="fl">79.06</span>,</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>                        cm <span class="sc">==</span> <span class="fl">181.84</span> <span class="sc">~</span> <span class="dv">102</span>,</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>                        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(cm)))</span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%$%</span> </span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ms <span class="sc">~</span> cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Agora faz mais sentido, embora ainda parece que há outliers (pra baixo) em cm</p>
+</section>
+<section id="problemas-na-modelagem" class="level1">
+<h1>Problemas na modelagem</h1>
+<p>O bloco 1 de 2016 é o mesmo de 2018?</p>
+<p>Como são locais diferentes, cada bloco é um “lugar” diferente.</p>
+<p>Principalmente se for rodar um modelo com efeito aleatório no bloco,</p>
+<p>e se o modelo não é um modelo aninhado com</p>
+<p>y ~ ano:bloco + gen + pl</p>
+<p>mas sim um modelo onde se tem o efeito de bloco sozinho como</p>
+<p>y ~ ano + bloco + gen + pl</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">blc_alt =</span> <span class="fu">case_when</span>(</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>                             ano <span class="sc">==</span> <span class="dv">2016</span> <span class="sc">&amp;</span> blc <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>                             ano <span class="sc">==</span> <span class="dv">2016</span> <span class="sc">&amp;</span> blc <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>                             ano <span class="sc">==</span> <span class="dv">2017</span> <span class="sc">&amp;</span> blc <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>                             ano <span class="sc">==</span> <span class="dv">2017</span> <span class="sc">&amp;</span> blc <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>                             ano <span class="sc">==</span> <span class="dv">2018</span> <span class="sc">&amp;</span> blc <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">5</span>,</span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>                             ano <span class="sc">==</span> <span class="dv">2018</span> <span class="sc">&amp;</span> blc <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="dv">6</span></span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>                             )</span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    ano blc gen plt rep   cp     ms    cm     codigo blc_alt
+1  2017   2  10   1   4    V 143.47 80.52  B2G10P1R4       4
+2  2017   1   8   1   2    V 160.63 72.58   B1G8P1R2       3
+3  2017   2  12   6   3    V 182.79 84.91  B2G12P6R3       4
+4  2016   1  10   6   5 &lt;NA&gt;     NA    NA  B1G10P6R5       1
+5  2017   2   9   8   3    V 271.95 86.81   B2G9P8R3       4
+6  2016   1  11  11   5 &lt;NA&gt;     NA    NA B1G11P11R5       1
+7  2017   2  14   5   2    V 208.30 80.88  B2G14P5R2       4
+8  2016   2   4  11   4 &lt;NA&gt;     NA    NA  B2G4P11R4       2
+9  2018   1  16  11   3    V 228.24 93.01 B1G16P11R3       5
+10 2016   1  16  11   1    V 156.84 76.66 B1G16P11R1       1</code></pre>
+</div>
+</div>
+<p>Podemos agora pensar num modelo de exemplo</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> </span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(ms <span class="sc">~</span> ano, .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = ms ~ ano, data = .)
+
+Coefficients:
+(Intercept)          ano  
+  -22581.75        11.29  </code></pre>
+</div>
+</div>
+<p>A cada acréscimo de 1 ano, sobe 11,29 a média da massa</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%$%</span></span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ms <span class="sc">~</span> ano)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Tem algo de estranho no gráfico? tenho ano 2016,5?</p>
+<section id="converter-colunas-de-fonte-de-variação-para-fatores" class="level2">
+<h2 class="anchored" data-anchor-id="converter-colunas-de-fonte-de-variação-para-fatores">Converter colunas de fonte de variação para fatores</h2>
+<p>Nosso primeiro modelo era uma regressão, se convertermos as fontes de variação para fatores, teremos um modelo em que a variável incluída no modelo não mais adicionará uma dimensão, mas sim duplicará as dimensões existentes!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">c</span>(<span class="st">"ano"</span>, <span class="st">"blc"</span>, <span class="st">"blc_alt"</span>, <span class="st">"gen"</span>, <span class="st">"plt"</span>, <span class="st">"rep"</span>), as.factor) </span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> </span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(ms <span class="sc">~</span> ano, .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = ms ~ ano, data = .)
+
+Coefficients:
+(Intercept)      ano2017      ano2018  
+     185.67        12.51        22.96  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%$%</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ms <span class="sc">~</span> ano)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%$%</span> </span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ms <span class="sc">~</span> gen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>É bom, sempre observar a distribuição dos resíduos do modelo!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> </span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(ms <span class="sc">~</span> ano, .) <span class="sc">%&gt;%</span> </span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>  residuals <span class="sc">%&gt;%</span> </span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>  plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Dá pra ver 5 bloquinhos de conjunto de dados</p>
+<p>Tem algum padrão nos resíduos? Faltou alguma fonte de variação no modelo? Talvez repetição?</p>
+<p>Outras explorações com o modelo:</p>
+<section id="regressão" class="level3">
+<h3 class="anchored" data-anchor-id="regressão">Regressão</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>raw_data_2018 <span class="sc">%&gt;%</span> </span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(massa <span class="sc">~</span> bloco <span class="sc">+</span> gen <span class="sc">+</span> pl, .) <span class="sc">%&gt;%</span></span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interact_plot</span>(<span class="at">pred =</span> gen, <span class="at">modx =</span> bloco, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">int.width =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: gen and bloco are not included in an interaction with one another in the
+model.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>raw_data_2018 <span class="sc">%&gt;%</span> </span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(massa <span class="sc">~</span> bloco <span class="sc">+</span> gen <span class="sc">+</span> pl, .) <span class="sc">%&gt;%</span></span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">interact_plot</span>(<span class="at">pred =</span> gen, <span class="at">modx =</span> bloco, <span class="at">partial.residuals =</span> <span class="cn">TRUE</span>, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">int.width =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: gen and bloco are not included in an interaction with one another in the
+model.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>raw_data_2018 <span class="sc">%&gt;%</span> </span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(massa <span class="sc">~</span> bloco <span class="sc">+</span> gen <span class="sc">+</span> pl, .) <span class="sc">%&gt;%</span></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>  summ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MODEL INFO:
+Observations: 1569 (471 missing obs. deleted)
+Dependent Variable: massa
+Type: OLS linear regression 
+
+MODEL FIT:
+F(3,1565) = 10.89, p = 0.00
+R² = 0.02
+Adj. R² = 0.02 
+
+Standard errors: OLS
+-------------------------------------------------
+                      Est.   S.E.   t val.      p
+----------------- -------- ------ -------- ------
+(Intercept)         194.28   5.18    37.49   0.00
+bloco                 4.59   2.54     1.81   0.07
+gen                   1.32   0.26     5.07   0.00
+pl                   -0.63   0.37    -1.73   0.08
+-------------------------------------------------</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%&gt;%</span> </span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(ms <span class="sc">~</span> cm, .) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>  summ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MODEL INFO:
+Observations: 3781 (2339 missing obs. deleted)
+Dependent Variable: ms
+Type: OLS linear regression 
+
+MODEL FIT:
+F(1,3779) = 4269.36, p = 0.00
+R² = 0.53
+Adj. R² = 0.53 
+
+Standard errors: OLS
+--------------------------------------------------
+                       Est.   S.E.   t val.      p
+----------------- --------- ------ -------- ------
+(Intercept)         -137.90   5.21   -26.48   0.00
+cm                     4.19   0.06    65.34   0.00
+--------------------------------------------------</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="sc">%$%</span> </span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(ms, cm, <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7283293</code></pre>
+</div>
+</div>
+</section>
+<section id="modelo-linear" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-linear">Modelo linear</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>modelo_1 <span class="ot">&lt;-</span> raw_data <span class="sc">%&gt;%</span> </span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>  lme4<span class="sc">::</span><span class="fu">lmer</span>(ms <span class="sc">~</span> ano<span class="sc">*</span>gen <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>blc_alt), .)</span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>interactions<span class="sc">::</span><span class="fu">cat_plot</span>(modelo_1, <span class="at">pred =</span> gen, <span class="at">modx =</span> ano, <span class="at">plot.points =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Exemplo_final_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A partir do momento que uma coluna de F.V. é um fator, não importa o número mais, agora o número é uma classe!</p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
